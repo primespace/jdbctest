@@ -25,7 +25,7 @@ public class Main {
 	
 		ConnectionPool pool = ConnectionPool.getInstance();
 		
-		pool.set("localhost", 3306, "fanluv", "root", "dlstkdv1");
+		pool.set("localhost", 3306, "fanluv", "root", "test1234");
 		
 		if(pool.startup() == false) {
 			return;
