@@ -13,7 +13,6 @@ public class TestData {
 		System.out.println("rankId " + rankId);
 		
 		
-		
 	}
 	
 	private int getRankId(final int offset) {
@@ -24,7 +23,8 @@ public class TestData {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		String sql = "select fn_firstWeekToDays(date_add(now(), interval ? day)) rankId from dual";
+		String sql = "select fn_toDays(date_add(now(), interval ? day)) rankId from dual";
+		// String sql = "select fn_toWeeks(date_add(now(), interval ? day)) rankId from dual";
 		
 		int rankId = 0;
 		
