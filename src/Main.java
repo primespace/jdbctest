@@ -33,10 +33,52 @@ public class Main {
 			return;
 		}
 		
-		for(int i = 0; i < 100; ++i) {
-			test1();
+		TestData data = new TestData();
+		data.insertRandom();
+		
+//		for(int i = 0; i < 100; ++i) {
+//			test1();
+//		}
+		
+//		insertTestData();
+		
+	}
+	
+	static void insertTestData()
+	{
+		System.out.println("insertTestData");
+		
+		ConnectionPool pool = ConnectionPool.getInstance();
+		Connection conn = pool.getConnection();
+		
+		PreparedStatement stmt = null;
+		
+		try {
+			
+			String sql = "insert into space_rank_heart(rank_id, space_id, heart_count, rank, rank_up, dense_rank) ";
+			sql += "values(fn_firstWeekToDays(now()), ?, ?, ?, ?, ?)";
+			
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, 1);
+			stmt.setInt(2, 1);
+			stmt.setInt(3, 1);
+			stmt.setInt(4, 1);
+			stmt.setInt(5, 1);
+
+			stmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
 		}
 		
+		try {
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		pool.closeConnection(conn);
 	}
 	
 	static void test1()
