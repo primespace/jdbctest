@@ -9,29 +9,29 @@ import com.prepeo.jdbc.Helper;
 
 public class TestData {
 	
-	private int[] spaceIds = new int[] {
-			1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-	};
+	
 
 	public void insertRandom() {
-
-		int rankId = getRankId(0);
 		
 		Random rand = new Random();
 		
-		for(int spaceId : spaceIds) {
-						
-			insertHeart(rankId, spaceId, rand.nextInt(100000));
-		}
-	}
-	
-	private void insertHeart(int rankId, int spaceId, int nextInt) {
-
-		if(isExist(rankId, spaceId)) {
+		for(int i = 0; i < 3; ++i) {
+			int rankId = getRankId(-i);
 			
+			for(int j = 0; j < 1000; ++j) {
+				int spaceId = j;
+
+				if(isExist(rankId, spaceId)) {
+					updateTestData(rankId, spaceId, rand.nextInt(10000));
+				} else {
+					insertTestData(rankId, spaceId, rand.nextInt(10000));
+				}
+				
+				System.out.println(String.format("%d %d complete.", rankId, spaceId));
+			}
 		}
-		
 	}
+		
 	
 	private int getRankId(final int offset) {
 		
@@ -83,6 +83,8 @@ public class TestData {
 			stmt.setInt(1,  rankId);
 			stmt.setInt(2, spaceId);
 			
+			rs = stmt.executeQuery();
+			
 			while(rs.next()) {
 				count = rs.getInt(1);
 			}
@@ -108,7 +110,7 @@ public class TestData {
 		
 		try {
 			
-			String sql = "update space_rank_heart set heart_count = ? where rank_id = ? and spaceId = ? ";
+			String sql = "update space_rank_heart set heart_count = ? where rank_id = ? and space_id = ? ";
 			
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, heartCount);
