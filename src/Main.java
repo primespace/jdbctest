@@ -26,6 +26,12 @@ import com.prepeo.jdbc.ConnectionPool;
  */
 public class Main {
 	
+	
+	private static void Usage()
+	{
+		System.out.println("java -jar fanluvrank.jar [local|test|real] [user] [password]");
+	}
+	
 	public static ArrayList<Integer> rankIds = new ArrayList<>();
 
 	public static void main(String[] args) {
@@ -34,7 +40,26 @@ public class Main {
 	
 		ConnectionPool pool = ConnectionPool.getInstance();
 		
-		pool.set("localhost", 3306, "fanluv", "root", "dlstkdv1");
+		if(args.length < 3) {
+			Usage();
+			return;
+		}
+		
+		String platform = args[0];
+		String host = "";
+		String database = "fanluv";
+		
+		if(platform.equals("local")) {
+			host = "localhost";
+		} else if(platform.equals("test")) {
+			host = "fanluv.ceswnyathdui.ap-northeast-2.rds.amazonaws.com";
+			database = "fanluv";
+		} else if(platform.equals("real")) {
+			// do nothing.
+		}
+		final String user = args[1];
+		final String password = args[2];
+		pool.set(host, 3306, database, user, password);
 		
 		if(pool.startup() == false) {
 			return;
@@ -44,7 +69,6 @@ public class Main {
 		
 		int curRankId = 0;
 		int preRankId = 0;
-		
 		
 		if(rankIds.size() == 0) {
 			return;
@@ -57,7 +81,8 @@ public class Main {
 			curRankId = rankIds.get(0);
 			preRankId = rankIds.get(1);
 		}
-		
+
+		System.out.println("host " + host);
 		System.out.println("curRankId : " + curRankId);
 		System.out.println("preRankId : " + preRankId);
 		
@@ -107,8 +132,9 @@ public class Main {
 		}
 		
 		pool.closeConnection(conn);
-		
 	}
+	
+	
 
 	private static void calcRank(int rankId) {
 
