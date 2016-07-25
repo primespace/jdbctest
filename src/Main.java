@@ -46,7 +46,6 @@ public class Main {
 		int preRankId = 0;
 		
 		
-		
 		if(rankIds.size() == 0) {
 			return;
 		}
@@ -59,7 +58,8 @@ public class Main {
 			preRankId = rankIds.get(1);
 		}
 		
-		System.out.println(" " + curRankId + " " + preRankId);
+		System.out.println("curRankId : " + curRankId);
+		System.out.println("preRankId : " + preRankId);
 		
 		if(preRankId != 0) {
 			if(isCompleteRankCalc(preRankId) == false) {
